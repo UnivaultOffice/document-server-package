@@ -1,4 +1,4 @@
-﻿; -- Prerequisites Installer --
+; -- Prerequisites Installer --
 
 #define EDITION "prerequisites"
 
@@ -53,7 +53,7 @@ MinVersion                =6.1sp1
 WizardImageFile           ={#BRANDING_DIR}\data\dialogpicture.bmp
 WizardSmallImageFile      ={#BRANDING_DIR}\data\dialogicon.bmp
 SetupIconFile             ={#BRANDING_DIR}\data\icon.ico
-#if SameText(sIntCompanyName, 'onlyoffice')
+#if SameText(sIntCompanyName, 'univaultoffice')
 LicenseFile               ={#BRANDING_DIR}\license\{#EDITION}\LICENSE.rtf
 #endif
 ShowLanguageDialog        = no
@@ -109,8 +109,8 @@ Name: "Prerequisites\Python"; Description: "Python 3.11.3 "; Flags: checkablealo
 Name: "Prerequisites\PostgreSQL"; Description: "PostgreSQL 18.0"; Flags: checkablealone; Types: full; Check: not IsPostgreSQLInstalled;
 Name: "Prerequisites\RabbitMq"; Description: "RabbitMQ 3.12.11"; Flags: checkablealone; Types: full; Check: not IsRabbitMQInstalled;
 Name: "Prerequisites\Redis"; Description: "Redis 7.4.0"; Flags: checkablealone; Types: full; Check:not IsRedisInstalled;
-Name: "Prerequisites\VC2013"; Description: "Visual C++ 2013 Update 5 Redistributable"; Flags: checkablealone; Types: full; Check: not IsVC2013Installed;
-Name: "Prerequisites\VC2022"; Description: "Visual C++ 2015-2022 Redistributable"; Flags: checkablealone; Types: full; Check:not IsVC2015To2022Installed;
+Name: "Prerequisites\VC2013"; Description: "Visual C++ 2026 Update 5 Redistributable"; Flags: checkablealone; Types: full; Check: not IsVC2013Installed;
+Name: "Prerequisites\VC2022"; Description: "Visual C++ 2025-2026 Redistributable"; Flags: checkablealone; Types: full; Check:not IsVC2015To2022Installed;
 
 [Code]
 function NextButtonClick(CurPageID: Integer): Boolean;

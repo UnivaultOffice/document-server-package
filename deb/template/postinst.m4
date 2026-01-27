@@ -1,5 +1,5 @@
 #!/bin/bash
-# postinst script for M4_ONLYOFFICE_VALUE
+# postinst script for M4_UNIVAULTOFFICE_VALUE
 #
 # see: dh_installdeb(1)
 
@@ -56,55 +56,55 @@ create_local_configs(){
 }
 
 read_saved_params(){
-	db_get M4_ONLYOFFICE_VALUE/db-type || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-type || true
 	DB_TYPE="$RET"
-	db_get M4_ONLYOFFICE_VALUE/db-host || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-host || true
 	DB_HOST="$RET"
-	db_get M4_ONLYOFFICE_VALUE/db-port || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-port || true
 	DB_PORT="$RET"
-	db_get M4_ONLYOFFICE_VALUE/db-user || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-user || true
 	DB_USER="$RET"
-	db_get M4_ONLYOFFICE_VALUE/db-pwd || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-pwd || true
 	DB_PWD="$RET"
-	db_get M4_ONLYOFFICE_VALUE/db-name || true
+	db_get M4_UNIVAULTOFFICE_VALUE/db-name || true
 	DB_NAME="$RET"
 
-	db_get M4_ONLYOFFICE_VALUE/rabbitmq-proto || true
+	db_get M4_UNIVAULTOFFICE_VALUE/rabbitmq-proto || true
 	RABBITMQ_PROTO="$RET"
-	db_get M4_ONLYOFFICE_VALUE/rabbitmq-host || true
+	db_get M4_UNIVAULTOFFICE_VALUE/rabbitmq-host || true
 	RABBITMQ_HOST="$RET"
-	db_get M4_ONLYOFFICE_VALUE/rabbitmq-user || true
+	db_get M4_UNIVAULTOFFICE_VALUE/rabbitmq-user || true
 	RABBITMQ_USER="$RET"
-	db_get M4_ONLYOFFICE_VALUE/rabbitmq-pwd || true
+	db_get M4_UNIVAULTOFFICE_VALUE/rabbitmq-pwd || true
 	RABBITMQ_PWD="$RET"
 
 ifelse(eval(ifelse(M4_PRODUCT_NAME,documentserver-ee,1,0)||ifelse(M4_PRODUCT_NAME,documentserver-ie,1,0)||ifelse(M4_PRODUCT_NAME,documentserver-de,1,0)),1,
-`	db_get M4_ONLYOFFICE_VALUE/redis-host || true
+`	db_get M4_UNIVAULTOFFICE_VALUE/redis-host || true
 	REDIS_HOST="$RET"
 
 ',)dnl
-	db_get M4_ONLYOFFICE_VALUE/cluster-mode || true
+	db_get M4_UNIVAULTOFFICE_VALUE/cluster-mode || true
 	CLUSTER_MODE="$RET"
 
-	db_get M4_ONLYOFFICE_VALUE/jwt-enabled || true
+	db_get M4_UNIVAULTOFFICE_VALUE/jwt-enabled || true
 	JWT_ENABLED="$RET"
-	db_get M4_ONLYOFFICE_VALUE/jwt-secret || true
+	db_get M4_UNIVAULTOFFICE_VALUE/jwt-secret || true
 	JWT_SECRET="${RET//select }"
-	db_get M4_ONLYOFFICE_VALUE/jwt-header || true
+	db_get M4_UNIVAULTOFFICE_VALUE/jwt-header || true
 	JWT_HEADER="$RET"
 
 	if [ $JWT_ENABLED = "true" ] && [ -z $JWT_SECRET ]; then
 		JWT_MESSAGE="JWT is enabled by default. A random secret is generated automatically. Run the command '# documentserver-jwt-status.sh' to get information about JWT."
 		JWT_SECRET=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
-		db_set M4_ONLYOFFICE_VALUE/jwt-secret $JWT_SECRET || true
+		db_set M4_UNIVAULTOFFICE_VALUE/jwt-secret $JWT_SECRET || true
 	elif [ $JWT_ENABLED = "false" ]; then
 		JWT_MESSAGE="You have JWT disabled. We recommend enabling JWT in ${LOCAL_CONFIG} in services.CoAuthoring.token.enable and configure your custom JWT key in services.CoAuthoring.secret"
 	fi
 
-	db_get M4_ONLYOFFICE_VALUE/plugins-enabled || true
+	db_get M4_UNIVAULTOFFICE_VALUE/plugins-enabled || true
 	DS_PLUGIN_INSTALLATION=${DS_PLUGIN_INSTALLATION:-$RET}
 
-	db_get M4_ONLYOFFICE_VALUE/wopi-enabled || true
+	db_get M4_UNIVAULTOFFICE_VALUE/wopi-enabled || true
 	WOPI_ENABLED="$RET"
 }
 
@@ -118,7 +118,7 @@ install_db() {
 			DB_TYPE="mariadb"
 		fi
 
-		db_set M4_ONLYOFFICE_VALUE/db-type $DB_TYPE || true
+		db_set M4_UNIVAULTOFFICE_VALUE/db-type $DB_TYPE || true
 	fi
 
 	case $DB_TYPE in
@@ -273,13 +273,13 @@ setup_nginx(){
 	  sed '/server_tokens/a \ \ set $secure_link_secret verysecretstring;' -i $DS_CONF
   fi
 
-  db_get M4_ONLYOFFICE_VALUE/ds-port || true
+  db_get M4_UNIVAULTOFFICE_VALUE/ds-port || true
   DS_PORT="$RET"
   
-  # db_get M4_ONLYOFFICE_VALUE/docservice-port || true
+  # db_get M4_UNIVAULTOFFICE_VALUE/docservice-port || true
   # DOCSERVICE_PORT="$RET"
   
-  # db_get M4_ONLYOFFICE_VALUE/example-port || true
+  # db_get M4_UNIVAULTOFFICE_VALUE/example-port || true
   # EXAMPLE_PORT="$RET"
   
   # setup ds port
@@ -291,8 +291,8 @@ setup_nginx(){
   fi
 
   # install nginx config
-  if [ -d /etc/nginx/conf.d ] && [ -e /etc/nginx/conf.d/onlyoffice-documentserver.conf ]; then
-    mv /etc/nginx/conf.d/onlyoffice-documentserver.conf /etc/nginx/conf.d/onlyoffice-documentserver.conf.old
+  if [ -d /etc/nginx/conf.d ] && [ -e /etc/nginx/conf.d/univaultoffice-documentserver.conf ]; then
+    mv /etc/nginx/conf.d/univaultoffice-documentserver.conf /etc/nginx/conf.d/univaultoffice-documentserver.conf.old
   fi
 
   if [ -d /etc/nginx/conf.d ] && [ ! -e /etc/nginx/conf.d/ds.conf ]; then
@@ -331,7 +331,7 @@ case "$1" in
 	configure)
 		adduser --quiet --home "$DIR" --system --group ds
 
-		# add nginx user to M4_ONLYOFFICE_VALUE group to allow access nginx to M4_ONLYOFFICE_VALUE log dir
+		# add nginx user to M4_UNIVAULTOFFICE_VALUE group to allow access nginx to M4_UNIVAULTOFFICE_VALUE log dir
 		adduser --quiet www-data ds
 
 		read_saved_params
@@ -345,10 +345,10 @@ ifelse(eval(ifelse(M4_PRODUCT_NAME,documentserver-ee,1,0)||ifelse(M4_PRODUCT_NAM
 		save_jwt_params
 		[ -z "$DS_DOCKER_INSTALLATION" ] && save_wopi_params
 
-		# configure ngninx for M4_ONLYOFFICE_VALUE
+		# configure ngninx for M4_UNIVAULTOFFICE_VALUE
 		setup_nginx
 
-		# modify permissions for M4_ONLYOFFICE_VALUE files and folders
+		# modify permissions for M4_UNIVAULTOFFICE_VALUE files and folders
 		mkdir -p "$LOG_DIR/docservice"
 		mkdir -p "$LOG_DIR-example"
 		mkdir -p "$LOG_DIR/converter"
@@ -366,7 +366,7 @@ ifelse(eval(ifelse(M4_PRODUCT_NAME,documentserver-ee,1,0)||ifelse(M4_PRODUCT_NAM
 		# set up read-only access to prevent modification ds's home directory
 		chmod a-w -R "$DIR"*
 
-		getent group onlyoffice >/dev/null && { DATA_OWNER="onlyoffice:onlyoffice"; usermod -aG onlyoffice ds; } || DATA_OWNER="ds:ds"
+		getent group univaultoffice >/dev/null && { DATA_OWNER="univaultoffice:univaultoffice"; usermod -aG univaultoffice ds; } || DATA_OWNER="ds:ds"
 		mkdir -p "$DIR/../Data" && chown -R "$DATA_OWNER" "$DIR/../Data" && chmod g+rwxs "$DIR/../Data"
 
     #setup logrotate config rights

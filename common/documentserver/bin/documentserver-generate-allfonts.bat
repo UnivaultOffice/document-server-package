@@ -1,8 +1,8 @@
 @ECHO off
 
-SET ONLYOFFICE_DATA_CONTAINER=false
+SET UNIVAULTOFFICE_DATA_CONTAINER=false
 IF NOT "%1"=="" (
-  SET ONLYOFFICE_DATA_CONTAINER=%1
+  SET UNIVAULTOFFICE_DATA_CONTAINER=%1
 )
 rem Setup path env to enable to load the dlls
 set PATH=%~dp0\..\server\FileConverter\bin;%PATH%
@@ -51,7 +51,7 @@ ECHO | SET /p="Generating js caches, please wait..."
 ECHO Done
 
 rem Restart web-site and converter
-IF NOT "%ONLYOFFICE_DATA_CONTAINER%"=="true" (  
+IF NOT "%UNIVAULTOFFICE_DATA_CONTAINER%"=="true" (  
   net stop DsDocServiceSvc
   net start DsDocServiceSvc
 

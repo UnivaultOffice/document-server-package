@@ -1,4 +1,4 @@
-﻿; -- Docs Installer --
+; -- Docs Installer --
 
 #ifndef EDITION
 #define EDITION 'community'
@@ -43,14 +43,14 @@
 #define REG_JWT_HEADER        'JwtHeader'
 
 #ifndef sDbDefValue
-  #define sDbDefValue         'onlyoffice'
+  #define sDbDefValue         'univaultoffice'
 #endif
 
 #define DefHost               'localhost'
 
 #define DbDefName              sDbDefValue
 #define DbDefUser              sDbDefValue
-#define DbDefPort              '5432'
+#define DbDefPort              '2026'
 
 #define DbHost                 DefHost
 #define DbAdminUserName        'postgres'
@@ -173,7 +173,7 @@ MinVersion                =6.1sp1
 WizardImageFile           ={#BRANDING_DIR}\data\dialogpicture.bmp
 WizardSmallImageFile      ={#BRANDING_DIR}\data\dialogicon.bmp
 SetupIconFile             ={#BRANDING_DIR}\data\icon.ico
-#if SameText(sIntCompanyName, 'onlyoffice')
+#if SameText(sIntCompanyName, 'univaultoffice')
 LicenseFile               ={#BRANDING_DIR}\license\{#EDITION}\LICENSE.rtf
 #endif
 ShowLanguageDialog        = no
@@ -431,8 +431,8 @@ Filename: "{#JSON}"; Parameters: "{#JSON_PARAMS} -e ""this.wopi.exponentOld = {c
 
 Filename: "{#REPLACE}"; Parameters: """(listen .*:)(\d{{2,5}\b)(?! ssl)(.*)"" ""$1""{code:GetDefaultPort}""$3"" ""{#NGINX_DS_CONF}"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
 ; Filename: "{cmd}"; Parameters: "/C COPY /Y ""{#NGINX_DS_TMPL}"" ""{#NGINX_DS_CONF}"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
-; Filename: "{#REPLACE}"; Parameters: "{{{{DOCSERVICE_PORT}} {code:GetDocServicePort} ""{#NGINX_SRV_DIR}\conf\includes\onlyoffice-http.conf"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
-; Filename: "{#REPLACE}"; Parameters: "{{{{EXAMPLE_PORT}} {code:GetExamplePort} ""{#NGINX_SRV_DIR}\conf\includes\onlyoffice-http.conf"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
+; Filename: "{#REPLACE}"; Parameters: "{{{{DOCSERVICE_PORT}} {code:GetDocServicePort} ""{#NGINX_SRV_DIR}\conf\includes\univaultoffice-http.conf"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
+; Filename: "{#REPLACE}"; Parameters: "{{{{EXAMPLE_PORT}} {code:GetExamplePort} ""{#NGINX_SRV_DIR}\conf\includes\univaultoffice-http.conf"""; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
 
 Filename: "{app}\bin\documentserver-update-securelink.bat"; Parameters: "{param:SECURE_LINK_SECRET}"; Flags: runhidden; StatusMsg: "{cm:CfgDs}"
 
@@ -642,7 +642,7 @@ var
   ResultCode: Integer;
 begin
   Result := False;
-  Exec('powershell.exe', '-Command "if ((Test-NetConnection -ComputerName www.onlyoffice.com -Port 80).TcpTestSucceeded) { exit 0 } else { exit 1 }"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec('powershell.exe', '-Command "if ((Test-NetConnection -ComputerName www.univaultoffice.github.io -Port 80).TcpTestSucceeded) { exit 0 } else { exit 1 }"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   if ResultCode = 0 then
     Result := True;
 end;
@@ -737,12 +737,12 @@ end;
 
 function GetDocServicePort(Param: String): String;
 begin
-  Result := ExpandConstant('{param:DOCSERVICE_PORT|{reg:HKLM\{#sAppRegPath},{#REG_DOCSERVICE_PORT}|8000}}');
+  Result := ExpandConstant('{param:DOCSERVICE_PORT|{reg:HKLM\{#sAppRegPath},{#REG_DOCSERVICE_PORT}|2026}}');
 end;
 
 function GetExamplePort(Param: String): String;
 begin
-  Result := ExpandConstant('{param:EXAMPLE_PORT|{reg:HKLM\{#sAppRegPath},{#REG_EXAMPLE_PORT}|3000}}');
+  Result := ExpandConstant('{param:EXAMPLE_PORT|{reg:HKLM\{#sAppRegPath},{#REG_EXAMPLE_PORT}|2026}}');
 end;
 
 function GetLicensePath(Param: String): String;
@@ -1391,8 +1391,8 @@ begin
   begin
     Result := true;
     Ports[0] := StrToInt(GetDefaultPort(''));
-    Ports[1] := 8080;
-    Ports[2] := 3000;
+    Ports[1] := 2026;
+    Ports[2] := 2026;
     for I := 0 to ArrayLength(Ports) - 1 do
     begin
       Exec(

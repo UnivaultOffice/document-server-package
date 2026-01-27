@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for M4_ONLYOFFICE_VALUE
+# postrm script for M4_UNIVAULTOFFICE_VALUE
 #
 # see: dh_installdeb(1)
 
@@ -28,7 +28,7 @@ remove_postgres() {
 		export PGPASSWORD="$DB_PWD"
 	fi
 	psql $CONNECTION_PARAMS $DB_NAME -t -c "DROP SCHEMA IF EXISTS public CASCADE;" &>/dev/null || \
-		{ echo "WARNING: can't delete M4_ONLYOFFICE_VALUE database tables" >&2; }
+		{ echo "WARNING: can't delete M4_UNIVAULTOFFICE_VALUE database tables" >&2; }
 }
 
 remove_mysql() {
@@ -36,7 +36,7 @@ remove_mysql() {
 	MYSQL="mysql -q $CONNECTION_PARAMS"
 	$MYSQL -e \
 		"DROP DATABASE IF EXISTS $DB_NAME;" &>/dev/null || \
-		{ echo "WARNING: can't delete M4_ONLYOFFICE_VALUE database" >&2; }
+		{ echo "WARNING: can't delete M4_UNIVAULTOFFICE_VALUE database" >&2; }
 }
 
 clean_ds_files() {
@@ -76,21 +76,21 @@ case "$1" in
 			rm -rf $DIR/sdkjs-plugins/
 		fi
     
-		db_input high M4_ONLYOFFICE_VALUE/remove-db || true
+		db_input high M4_UNIVAULTOFFICE_VALUE/remove-db || true
 		db_go
-		db_get M4_ONLYOFFICE_VALUE/remove-db
+		db_get M4_UNIVAULTOFFICE_VALUE/remove-db
 		if [ "$RET" = "true" ]; then
-			db_get M4_ONLYOFFICE_VALUE/db-type
+			db_get M4_UNIVAULTOFFICE_VALUE/db-type
 			DB_TYPE="$RET"
-			db_get M4_ONLYOFFICE_VALUE/db-host
+			db_get M4_UNIVAULTOFFICE_VALUE/db-host
 			DB_HOST="$RET"
-			db_get M4_ONLYOFFICE_VALUE/db-port
+			db_get M4_UNIVAULTOFFICE_VALUE/db-port
 			DB_PORT="$RET"
-			db_get M4_ONLYOFFICE_VALUE/db-user
+			db_get M4_UNIVAULTOFFICE_VALUE/db-user
 			DB_USER="$RET"
-			db_get M4_ONLYOFFICE_VALUE/db-pwd
+			db_get M4_UNIVAULTOFFICE_VALUE/db-pwd
 			DB_PWD="$RET"
-			db_get M4_ONLYOFFICE_VALUE/db-name
+			db_get M4_UNIVAULTOFFICE_VALUE/db-name
 			DB_NAME="$RET"
 			case $DB_TYPE in
 				"postgres")

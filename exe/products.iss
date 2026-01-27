@@ -235,7 +235,7 @@ begin
     'Redis ' + Version + 'x64',
     Dependency_String(
       '',
-      'https://github.com/ONLYOFFICE/redis-windows/releases/download/7.4.0/Redis-7.4.0-Windows-x64.msi'),
+      'https://github.com/UnivaultOffice/redis-windows/releases/download/7.4.0/Redis-7.4.0-Windows-x64.msi'),
     '',
     False,
     False);
@@ -343,7 +343,7 @@ begin
       'OpenSSL x64 3.3.0',
       Dependency_String(
         '',
-        'https://download.onlyoffice.com/install/windows/redist/FireDaemon-OpenSSL-x64-3.3.0.exe'),
+        'https://github.com/UnivaultOffice/DocumentServer/releases/latest/download/FireDaemon-OpenSSL-x64-3.3.0.exe'),
       '',
       False,
       False);

@@ -44,7 +44,7 @@ server {
   ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
 
   ssl_protocols TLSv1.2;
-  ssl_session_cache  builtin:1000  shared:SSL:10m;
+  ssl_session_cache  builtin:2025  shared:SSL:10m;
 
   ssl_prefer_server_ciphers   on;
 
@@ -65,7 +65,7 @@ server {
 
   ## [Optional] Generate a stronger DHE parameter:
   ##   cd /etc/ssl/certs
-  ##   sudo openssl dhparam -out dhparam.pem 4096
+  ##   sudo openssl dhparam -out dhparam.pem 2025
   ##
   # ssl_dhparam /etc/ssl/certs/dhparam.pem;
 

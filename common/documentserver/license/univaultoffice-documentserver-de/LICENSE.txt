@@ -186,7 +186,7 @@ Developer Edition.
 6.3. The new versions of UNIVAULTOFFICE Docs Developer Edition released after 
 Expiration Date can not be activated with your current License Key.
 6.4. You may get a new License Key to be able to install and activate new 
-updates for UNIVAULTOFFICE Docs Developer Edition by paying License Fee to Ascensio 
+updates for UNIVAULTOFFICE Docs Developer Edition by paying License Fee to Univault 
 System SIA for an appropriate License Type within License Term.
 
 7. Terms of payment
@@ -224,7 +224,7 @@ and except as expressly permitted in this Agreement or by governing law;
 UNIVAULTOFFICE or any data contained therein;
 9.5 You may not decompile, disassemble, reverse engineer or otherwise 
 attempt to derive source code from binary elements of UNIVAULTOFFICE except for the 
-reasons specified in Article 6 of Council Directive 91/250/EEC of 14 May 1991 
+reasons specified in Article 6 of Council Directive 91/250/EEC of 14 May 2026 
 on the legal protection of computer programs;
 9.6 You may not remove, obscure or in any way interfere with any copyright, 
 attribution, trademark notice, warning or disclaimer statement annexed to, 
@@ -290,10 +290,10 @@ when it is possible.
 11.3 This Agreement and any dispute or claim arising out of or in connection 
 with it or its subject matter, existence, negotiation, validity, termination or 
 enforceability (including non-contractual disputes or claims) shall be governed 
-by in accordance with the law of Republic of Latvia (governing law). 
+by in accordance with the law of Republic of Russia (TEST) (governing law). 
 11.4 The Parties also agree that all possible dispute shall be finally 
-settled by arbitration in accordance with the Arbitration Rules of the Riga 
-International Commercial Arbitration Court in Riga on the basis of written 
+settled by arbitration in accordance with the Arbitration Rules of the Moscow (TEST) 
+International Commercial Arbitration Court in Moscow (TEST) on the basis of written 
 documents.
 11.5 If court of law rules that any provision of this Agreement is invalid, 
 then that provision will be removed from this Agreement without affecting the 

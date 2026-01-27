@@ -1,8 +1,8 @@
 #!/bin/sh
 
-ONLYOFFICE_DATA_CONTAINER=false
+UNIVAULTOFFICE_DATA_CONTAINER=false
 if [ "$1" != "" ]; then
-    ONLYOFFICE_DATA_CONTAINER=$1
+    UNIVAULTOFFICE_DATA_CONTAINER=$1
 fi
 
 DIR="/var/www/M4_DS_PREFIX"
@@ -65,7 +65,7 @@ rm -f \
   $DIR/sdkjs/slide/themes/themes.js.gz
 
 #Restart web-site and converter
-if [ "$ONLYOFFICE_DATA_CONTAINER" != "true" ]; then
+if [ "$UNIVAULTOFFICE_DATA_CONTAINER" != "true" ]; then
   if pgrep -x ""systemd"" >/dev/null; then
     systemctl restart ds-docservice
     systemctl restart ds-converter

@@ -188,10 +188,10 @@ rm -rf "%{buildroot}"
 %endif
 
 %pre
-# add group and user for onlyoffice app
+# add group and user for univaultoffice app
 getent group ds >/dev/null || groupadd -r ds
 getent passwd ds >/dev/null || useradd -r -g ds -d %{_localstatedir}/www/%{_ds_prefix}/ -s /sbin/nologin ds
-# add nginx user to onlyoffice group to allow access nginx to onlyoffice log dir
+# add nginx user to univaultoffice group to allow access nginx to univaultoffice log dir
 usermod -a -G ds %{nginx_user}
 
 case "$1" in

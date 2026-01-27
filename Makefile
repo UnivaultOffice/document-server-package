@@ -2,7 +2,7 @@ PWD := $(shell pwd)
 CURL := curl -s -L -o
 TOUCH := touch
 
-COMPANY_NAME ?= ONLYOFFICE
+COMPANY_NAME ?= UNIVAULTOFFICE
 PRODUCT_NAME ?= DocumentServer
 PRODUCT_SHORT_NAME ?= $(firstword $(subst -, ,$(PRODUCT_NAME)))
 
@@ -10,10 +10,10 @@ COMPANY_NAME_LOW = $(shell echo $(COMPANY_NAME) | tr A-Z a-z)
 PRODUCT_NAME_LOW = $(shell echo $(PRODUCT_NAME) | tr A-Z a-z)
 PRODUCT_SHORT_NAME_LOW = $(shell echo $(PRODUCT_SHORT_NAME) | tr A-Z a-z)
 
-PUBLISHER_NAME ?= Ascensio System SIA
-PUBLISHER_URL ?= http://onlyoffice.com
-SUPPORT_URL ?= http://support.onlyoffice.com
-SUPPORT_MAIL ?= support@onlyoffice.com
+PUBLISHER_NAME ?= Univault Technologies
+PUBLISHER_URL ?= http://univaultoffice.github.io
+SUPPORT_URL ?= http://support.univaultoffice.github.io
+SUPPORT_MAIL ?= support@univaultoffice.github.io
 
 PRODUCT_VERSION ?= 0.0.0
 BUILD_NUMBER ?= 0
@@ -160,11 +160,11 @@ else
 		ARCH_EXT := .zip
 		AR := 7z a -y
 		NGINX_CONF := /etc/nginx/
-		NGINX_LOG := /var/log/onlyoffice/documentserver/
-		NGINX_CASH := /var/cache/nginx/onlyoffice/documentserver/
-		DS_ROOT := /var/www/onlyoffice/documentserver/
-		DS_FILES := /var/lib/onlyoffice/documentserver/
-		DS_EXAMLE := /var/www/onlyoffice/documentserver-example
+		NGINX_LOG := /var/log/univaultoffice/documentserver/
+		NGINX_CASH := /var/cache/nginx/univaultoffice/documentserver/
+		DS_ROOT := /var/www/univaultoffice/documentserver/
+		DS_FILES := /var/lib/univaultoffice/documentserver/
+		DS_EXAMLE := /var/www/univaultoffice/documentserver-example
 		DEV_NULL := /dev/null
 	endif
 	ifeq ($(UNAME_M),x86_64)
@@ -245,7 +245,7 @@ LINUX_DEPS_CLEAN += common/documentserver-example/systemd/*.service
 
 LINUX_DEPS += $(basename $(wildcard common/documentserver/bin/*.sh.m4))
 
-ifneq ($(COMPANY_NAME_LOW),onlyoffice)
+ifneq ($(COMPANY_NAME_LOW),univaultoffice)
 LINUX_DEPS := $(filter-out common/documentserver/bin/documentserver-pluginsmanager.sh,$(LINUX_DEPS))
 PLUGIN_MANAGER_FILE := $(wildcard common/documentserver/bin/documentserver-pluginsmanager.sh.m4)
 endif
@@ -264,10 +264,10 @@ LINUX_DEPS += apt-rpm/bin/documentserver-configure.sh
 LINUX_DEPS_CLEAN += rpm/bin/*.sh
 LINUX_DEPS_CLEAN += apt-rpm/bin/*.sh
 
-ifeq ($(COMPANY_NAME_LOW),onlyoffice)
-ONLYOFFICE_VALUE := onlyoffice
+ifeq ($(COMPANY_NAME_LOW),univaultoffice)
+UNIVAULTOFFICE_VALUE := univaultoffice
 else
-ONLYOFFICE_VALUE := ds
+UNIVAULTOFFICE_VALUE := ds
 endif
 
 M4_PARAMS += -D M4_COMPANY_NAME=$(COMPANY_NAME)
@@ -280,7 +280,7 @@ M4_PARAMS += -D M4_PUBLISHER_URL='$(PUBLISHER_URL)'
 M4_PARAMS += -D M4_SUPPORT_MAIL='$(SUPPORT_MAIL)'
 M4_PARAMS += -D M4_SUPPORT_URL='$(SUPPORT_URL)'
 M4_PARAMS += -D M4_BRANDING_DIR='$(abspath $(BRANDING_DIR))'
-M4_PARAMS += -D M4_ONLYOFFICE_VALUE=$(ONLYOFFICE_VALUE)
+M4_PARAMS += -D M4_UNIVAULTOFFICE_VALUE=$(UNIVAULTOFFICE_VALUE)
 M4_PARAMS += -D M4_PLATFORM=$(PLATFORM)
 M4_PARAMS += -D M4_DEB_ARCH='$(DEB_ARCH)'
 M4_PARAMS += -D M4_NGINX_CONF='$(NGINX_CONF)'
@@ -346,19 +346,19 @@ documentserver:
 	mv -f $(DOCUMENTSERVER)/server/Common/config/log4js/*.json $(DOCUMENTSERVER_CONFIG)/log4js/
 
 	# rename product specific folders
-	sed "s|onlyoffice\/documentserver|"$(DS_PREFIX)"|"  -i $(DOCUMENTSERVER_CONFIG)/*.json
+	sed "s|univaultoffice\/documentserver|"$(DS_PREFIX)"|"  -i $(DOCUMENTSERVER_CONFIG)/*.json
 
 	# rename db account params
-	sed 's|\("db.*": "\)onlyoffice\("\)|\1'$(ONLYOFFICE_VALUE)'\2|'  -i $(DOCUMENTSERVER_CONFIG)/*.json
+	sed 's|\("db.*": "\)univaultoffice\("\)|\1'$(UNIVAULTOFFICE_VALUE)'\2|'  -i $(DOCUMENTSERVER_CONFIG)/*.json
 
 	# rename db schema name
-	sed 's|onlyoffice|'$(ONLYOFFICE_VALUE)'|'  -i $(DOCUMENTSERVER)/server/schema/**/*.sql
+	sed 's|univaultoffice|'$(UNIVAULTOFFICE_VALUE)'|'  -i $(DOCUMENTSERVER)/server/schema/**/*.sql
 
 	# ignore CREATE DATABASE commands in MySQL
 	sed -r "s/^(CREATE DATABASE|USE)/-- \1/" -i $(DOCUMENTSERVER)/server/schema/mysql/*.sql
 
 	# rename product in license
-	sed 's|ONLYOFFICE|'$(COMPANY_NAME)'|'  -i $(DOCUMENTSERVER)/server/3rd-Party.txt
+	sed 's|UNIVAULTOFFICE|'$(COMPANY_NAME)'|'  -i $(DOCUMENTSERVER)/server/3rd-Party.txt
 	sed 's|DocumentServer|'$(PRODUCT_NAME)'|'  -i $(DOCUMENTSERVER)/server/3rd-Party.txt
 
 	# Prevent for modification original config
@@ -479,7 +479,7 @@ $(RPM): $(COMMON_DEPS) $(LINUX_DEPS) documentserver documentserver-example
 		--target $(RPM_ARCH) \
 		$(PACKAGE_NAME).spec
 
-ifeq ($(COMPANY_NAME_LOW),onlyoffice)
+ifeq ($(COMPANY_NAME_LOW),univaultoffice)
 M4_PARAMS += -D M4_DS_EXAMPLE_ENABLE=1
 M4_PARAMS += -D M4_DS_PLUGIN_INSTALLATION=true
 else
@@ -556,11 +556,11 @@ $(DS_BIN): documentserver
 $(WINSW)      : url = https://github.com/winsw/winsw/releases/download/v3.0.0-alpha.11/WinSW-x64.exe
 $(CERTBOT)    : url = https://github.com/certbot/certbot/releases/download/v2.6.0/certbot-beta-installer-win_amd64_signed.exe
 $(ERLANG)     : url = https://github.com/erlang/otp/releases/download/OTP-26.2.1/otp_win64_26.2.1.exe
-$(OPENSSL)    : url = https://download.onlyoffice.com/install/windows/redist/FireDaemon-OpenSSL-x64-3.3.0.exe
+$(OPENSSL)    : url = https://github.com/UnivaultOffice/DocumentServer/releases/latest/download/FireDaemon-OpenSSL-x64-3.3.0.exe
 $(POSTGRESQL) : url = https://get.enterprisedb.com/postgresql/postgresql-18.0-1-windows-x64.exe
 $(PYTHON)     : url = https://www.python.org/ftp/python/3.11.3/python-3.11.3-amd64.exe
 $(RABBITMQ)   : url = https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.12.11/rabbitmq-server-3.12.11.exe
-$(REDIS)      : url = https://github.com/ONLYOFFICE/redis-windows/releases/download/7.4.0/Redis-7.4.0-Windows-x64.msi
+$(REDIS)      : url = https://github.com/UnivaultOffice/redis-windows/releases/download/7.4.0/Redis-7.4.0-Windows-x64.msi
 $(VC2013)     : url = https://download.visualstudio.microsoft.com/download/pr/10912041/cee5d6bca2ddbcd039da727bf4acb48a/vcredist_x64.exe
 $(VC2022)     : url = https://aka.ms/vs/17/release/vc_redist.x64.exe
 

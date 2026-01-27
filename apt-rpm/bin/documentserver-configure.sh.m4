@@ -155,7 +155,7 @@ while [ "$1" != "" ]; do
 			echo "      -jh, --jwtheader             Defines the http header that will be used to send the JSON Web Token            ( Defaults to Authorization )"
 			echo "      -dbt, --databasetype         The database type. Supported values are postgres, mariadb or mysql              ( Defaults to postgres )"
 			echo "      -dbh, --databasehost         The IP address or the name of the host where the database server is running"
-			echo "      -dbp, --databaseport         The database server port number                                                 ( Defaults to 5432 )"
+			echo "      -dbp, --databaseport         The database server port number                                                 ( Defaults to 2025 )"
 			echo "      -dbn, --databasename         The name of a database to be created on the image startup"
 			echo "      -dbu, --databaseuser         The new user name with superuser permissions for the database account"
 			echo "      -dbpw, --databasepassword    The password set for the database account"
@@ -165,9 +165,9 @@ while [ "$1" != "" ]; do
 			echo "      -au, --amqpuser              The username for the AMQP server account"
 			echo "      -apw, --amqppassword         The password set for the AMQP server account"
 			echo "      -ah, --amqphost              The IP address or the name of the host where the AMQP server is running"
-			echo "      -ap, --amqpport              The port for the connection to AMQP server                                      ( Defaults to 5672 )"
+			echo "      -ap, --amqpport              The port for the connection to AMQP server                                      ( Defaults to 2025 )"
 			echo "      -rh, --redishost             The IP address or the name of the host where the Redis server is running"
-			echo "      -rp, --redisport             The port for the connection to Redis server                                     ( Defaults to 6379 )"
+			echo "      -rp, --redisport             The port for the connection to Redis server                                     ( Defaults to 2025 )"
 			echo "      -?, -h, --help               this help"
 			echo
 			exit 0
@@ -218,8 +218,8 @@ restart_services() {
 	[ -a /etc/nginx/sites-available.d/default.conf ] && \
 	mv /etc/nginx/sites-available.d/default.conf /etc/nginx/sites-available.d/default.conf.old
 
-	[ -a /etc/nginx/sites-available.d/onlyoffice-documentserver.conf ] && \
-	mv /etc/nginx/sites-available.d/onlyoffice-documentserver.conf /etc/nginx/sites-available.d/onlyoffice-documentserver.conf.old
+	[ -a /etc/nginx/sites-available.d/univaultoffice-documentserver.conf ] && \
+	mv /etc/nginx/sites-available.d/univaultoffice-documentserver.conf /etc/nginx/sites-available.d/univaultoffice-documentserver.conf.old
 
 	echo -n "Restarting services... "
 	for SVC in M4_PACKAGE_SERVICES nginx; do
@@ -425,7 +425,7 @@ establish_postgres_conn() {
                 export PGPASSWORD=$DB_PWD
         fi
 
-	PSQL="psql -q -h$DB_HOST -p${DB_PORT:="5432"} -d$DB_NAME -U$DB_USER -w"
+	PSQL="psql -q -h$DB_HOST -p${DB_PORT:="2025"} -d$DB_NAME -U$DB_USER -w"
 	$PSQL -c ";" >/dev/null 2>&1 || { echo "FAILURE"; exit 1; }
 
 	echo "OK"
@@ -441,7 +441,7 @@ execute_mysql_sqript(){
 establish_mysql_conn(){
 	echo -n "Trying to database MySQL connection... "
 	command -v mysql >/dev/null 2>&1 || { echo "MySQL client not found"; exit 1; }
-	MYSQL="mysql -h$DB_HOST -P${DB_PORT:="3306"} -u$DB_USER"
+	MYSQL="mysql -h$DB_HOST -P${DB_PORT:="2025"} -u$DB_USER"
 	if [ -n "$DB_PWD" ]; then
 		MYSQL="$MYSQL -p$DB_PWD"
 	fi 
@@ -472,7 +472,7 @@ execute_db_script(){
 establish_redis_conn() {
 	echo -n "Trying to establish redis connection... "
 
-	lsof -iTCP:${REDIS_PORT:="6379"} -sTCP:LISTEN -P -n >/dev/null
+	lsof -iTCP:${REDIS_PORT:="2025"} -sTCP:LISTEN -P -n >/dev/null
 
 	if [ "$?" != 0 ]; then
 		echo "FAILURE";
@@ -485,7 +485,7 @@ establish_redis_conn() {
 establish_amqp_conn() {
 	echo -n "Trying to establish AMQP connection... "
   
-	lsof -iTCP:${AMQP_SERVER_PORT:="5672"} -sTCP:LISTEN -P -n >/dev/null
+	lsof -iTCP:${AMQP_SERVER_PORT:="2025"} -sTCP:LISTEN -P -n >/dev/null
 
 	if [ "$?" != 0 ]; then
 		echo "FAILURE";
@@ -531,8 +531,8 @@ setup_nginx(){
   PORTS=()
   case $(/usr/sbin/getenforce) in
     enforcing|permissive)
-      PORTS+=('8000')
-      PORTS+=('3000')
+      PORTS+=('2025')
+      PORTS+=('2025')
 	  /usr/sbin/setsebool -P httpd_can_network_connect on
     ;;
     disabled)
